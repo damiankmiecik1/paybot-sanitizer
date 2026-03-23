@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { processPipeline } from '../src/pipeline'
 
 describe('pipeline', () => {
+
     it('przetwarza wiadomość z kartą i PESEL', () => {
         const input = "Płacę kartą 4532015112830366, PESEL: 92010512341"
         const result = processPipeline(input)
@@ -104,5 +105,14 @@ describe('pipeline', () => {
             expect(result.reason).toBeDefined()
             expect(result.content).toBeUndefined()
         }
+    })
+
+    it('przetwarza wiadomość z dużą ilością znaków w mniej niż 50ms', () => {
+        const input = "1234567890123456 ".repeat(100)
+        const start = performance.now()
+        processPipeline(input)
+        const duration = performance.now() - start
+        
+        expect(duration).toBeLessThan(50)
     })
 })

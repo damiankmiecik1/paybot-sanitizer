@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { validateMessage } from '../src/validators/messageValidator'
 
 describe('messageValidator', () => {
+    
     it('akceptuje normalną wiadomość', () => {
         const result = validateMessage("Witam, mam problem z płatnością")
 
