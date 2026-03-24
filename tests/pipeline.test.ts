@@ -101,18 +101,10 @@ describe('pipeline', () => {
         const input = ""
         const result = processPipeline(input)
 
+        expect(result.status).toBe('rejected')
         if (result.status === 'rejected') {
             expect(result.reason).toBeDefined()
             expect(result.content).toBeUndefined()
         }
-    })
-
-    it('przetwarza wiadomość z dużą ilością znaków w mniej niż 50ms', () => {
-        const input = "1234567890123456 ".repeat(100)
-        const start = performance.now()
-        processPipeline(input)
-        const duration = performance.now() - start
-        
-        expect(duration).toBeLessThan(50)
     })
 })

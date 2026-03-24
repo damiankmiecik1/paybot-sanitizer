@@ -138,11 +138,12 @@ describe('cardMasker', () => {
         expect(result.detectedItems[0].original).toBe("4532015112830366")
     })
 
-    it('maskuje 13-cyfrowy podciąg z dłuższej liczby (false positive)', () => {
+    it('maskuje 13-cyfrowy podciąg z dłuższej liczby', () => {
         const input = "Numer: 45320151128303"
         const result = maskCards(input)
  
-        expect(result.detectedItems.length).toBeGreaterThanOrEqual(1)
+        expect(result.detectedItems).toHaveLength(1)
+        expect(result.detectedItems[0].original).toBe("4532015112830")
     })
 
     it('NIE maskuje 12 cyfr zaczynających się od 4', () => {
@@ -185,18 +186,12 @@ describe('cardMasker', () => {
         expect(result.detectedItems).toHaveLength(0)
     })
 
-    it('NIE maskuje dwóch krótkich liczb oddzielonych spacją które po sklejeniu mogłyby wyglądać jak karta', () => {
+    it('NIE maskuje dwóch krótkich liczb oddzielonych tekstem', () => {
         const input = "Zamówienie 4532015 i faktura 112830366"
         const result = maskCards(input)
- 
-        // Po normalizeCard to się sklei w "4532015112830366" co jest valid kartą
-        // Jeśli maskuje = false positive
-        const isKnownFalsePositive = result.detectedItems.length > 0
-        if (isKnownFalsePositive) {
-            expect(result.detectedItems).toHaveLength(1)
-        } else {
-            expect(result.sanitized).toBe("Zamówienie 4532015 i faktura 112830366")
-        }
+    
+        expect(result.sanitized).toBe("Zamówienie 4532015 i faktura 112830366")
+        expect(result.detectedItems).toHaveLength(0)
     })
 
     it('nie psuje się na polskich znakach obok karty', () => {

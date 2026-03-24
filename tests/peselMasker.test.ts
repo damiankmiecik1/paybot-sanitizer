@@ -63,45 +63,43 @@ describe('peselMasker', () => {
     })
 
     it('maskuje PESEL z dniem = 1', () => {
-        const input = "PESEL: 90010100003"
+        const input = "PESEL: 90010100009"
         const result = maskPesel(input)
- 
-        if (result.detectedItems.length > 0) {
-            expect(result.sanitized).toContain("900101*****")
-        }
+    
+        expect(result.detectedItems).toHaveLength(1)
+        expect(result.sanitized).toContain("900101*****")
     })
 
-    it('maskuje PESEL z dniem = 31 jeśli checksum ok', () => {
-        const input = "PESEL: 92013112345"
+    it('maskuje PESEL z dniem = 31', () => {
+        const input = "PESEL: 92013100000"
         const result = maskPesel(input)
+    
+        expect(result.detectedItems).toHaveLength(1)
+        expect(result.sanitized).toContain("920131*****")
     })
 
-    it('maskuje PESEL z miesiącem = 12 jeśli checksum ok', () => {
-        const input = "PESEL: 92120112348"
+    it('maskuje PESEL z miesiącem = 12', () => {
+        const input = "PESEL: 92120100007"
         const result = maskPesel(input)
- 
-        if (result.detectedItems.length > 0) {
-            expect(result.sanitized).toContain("921201*****")
-            expect(result.detectedItems[0].type).toBe('pesel')
-        }
+    
+        expect(result.detectedItems).toHaveLength(1)
+        expect(result.sanitized).toContain("921201*****")
     })
 
-    it('maskuje PESEL z miesiącem = 21 (styczeń XXI w.) jeśli checksum ok', () => {
-        const input = "PESEL: 02210112345"
+    it('maskuje PESEL z miesiącem = 21 (styczeń XXI w.)', () => {
+        const input = "PESEL: 02210100008"
         const result = maskPesel(input)
- 
-        if (result.detectedItems.length > 0) {
-            expect(result.sanitized).toContain("022101*****")
-        }
+    
+        expect(result.detectedItems).toHaveLength(1)
+        expect(result.sanitized).toContain("022101*****")
     })
 
-    it('maskuje PESEL z miesiącem = 32 (grudzień XXI w.) jeśli checksum ok', () => {
-        const input = "PESEL: 02320112345"
+    it('maskuje PESEL z miesiącem = 32 (grudzień XXI w.)', () => {
+        const input = "PESEL: 02320100002"
         const result = maskPesel(input)
- 
-        if (result.detectedItems.length > 0) {
-            expect(result.sanitized).toContain("023201*****")
-        }
+    
+        expect(result.detectedItems).toHaveLength(1)
+        expect(result.sanitized).toContain("023201*****")
     })
 
     it('NIE maskuje PESEL z błędną sumą kontrolną', () => {
